@@ -1,0 +1,61 @@
+<div class="row">
+  <app-search (searchTerm)="onSearch($event)"></app-search>
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <td>id</td>
+        <td>name</td>
+        <td>courses</td>
+        <td>edit</td>
+        <td>delete</td>
+      </tr>
+    </thead>
+    <tr *ngFor="let student of students| filter:searchTerm;let i =index">
+      <td>{{student.sid}}</td>
+      <td>{{student.sname}}</td>
+      <td>{{student.cname}}</td>
+      <td><button class="btn btn-sm btn-success" (click)="onEdit(i)">{{editMode?  'To Add' : 'To Edit' }}</button></td>
+      <td><button class="btn btn-sm btn-danger" (click)="onDelete(i)">Delete</button></td>
+    </tr>
+  </table>
+
+  <form #f="ngForm" (ngSubmit)="onAdd(f)" *ngIf="!editMode">
+    <h3>Please add new student here!</h3>
+    <div class="form-group">
+      <label for="name" class="col-form-label">Name:</label>
+      <input type="text" name="name" ngModel #name="ngModel" class="form-control" required maxlength="15" placeholder="insert new student name here">
+      <div class="alert alert-danger" *ngIf="name.invalid && (name.touched || name.dirty)">
+        <span [hidden]="!name.errors.required">The name is required!</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="search" class="col-form-label">Courses:</label>
+      <input type="checkbox" ngModel name="math"  value="math" checked><label for="courses">Math</label>
+      <input type="checkbox" ngModel name="dataStructure"  value="Data Structure"><label for="courses">Data Structure</label>
+    </div>
+
+    <input type="submit" name="" value="add" class="btn btn-primary form-control" [disabled]="f.invalid">
+  </form>
+
+  <form #f2="ngForm" name="editForm" (ngSubmit)="onEditSubmit(f2.value)" *ngIf="editMode">
+    <h3>Your are editing student with id {{editSid}}</h3>
+    <div class="form-group">
+      <label for="name" class="col-form-label">Name:</label>
+      <input type="text" name="name" ngModel #name="ngModel" class="form-control" required maxlength="15" placeholder="edit student name here">
+      <div class="alert alert-danger" *ngIf="name.invalid && (name.touched || name.dirty)">
+        <span [hidden]="!name2.errors.required">The name is required!</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="search" class="col-form-label">Courses:</label>
+      <input type="radio" ngModel name="course"  value="math" checked required><label for="courses">Math</label>
+      <input type="radio" ngModel name="course"  value="Data Structure" required><label for="courses2">Data Structure</label>
+    </div>
+    <div *ngIf="showError">The student already register such course! so we couldn't have duplicate information in database;
+      Try Again</div>
+    <input type="submit" name="" value="Confirm Edit" class="btn btn-primary form-control" [disabled]="f2.invalid">
+  </form>
+
+</div>
