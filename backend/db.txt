@@ -1,0 +1,41 @@
+create table course (
+    cid        integer not null,
+    cname       varchar(40) not null,
+    primary key (cid) );
+
+insert into course values ('1', 'math');
+insert into course values ('2', 'data structure');
+
+create table student (
+    sid        integer  AUTO_INCREMENT,
+    sname       varchar(20) not null,
+    primary key (sid) );
+insert into student values (1000, 'Jones');
+insert into student values (1001, 'jack');
+insert into student values (1002, 'jason');
+insert into student values (1003, 'tom');
+insert into student values (1004, 'kevin');
+insert into student values (1005, 'jerry');
+insert into student values (1006, 'Zack');
+
+    create table enrollment (
+        sid        integer not null,
+        cid        integer not null,
+        primary key (sid, cid)
+        );            // foreign key (sid) references student (sid)
+insert into enrollment values (1000, 1);
+insert into enrollment values (1002, 1);
+insert into enrollment values (1003, 1);
+insert into enrollment values (1004, 2);
+insert into enrollment values (1001, 1);
+insert into enrollment values (1005, 2);
+insert into enrollment values (1006, 1);
+insert into enrollment values (1006, 2);
+
+
+////
+
+select student.sid, student.sname, course.cname
+from student, course, enrollment
+where student.sid = enrollment.sid
+and course.cid = enrollment.cid;
